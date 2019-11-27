@@ -6,7 +6,10 @@ import api from '../../Services/api';
 import constants from '../../Constants/constants';
 
 const ResultSearchStyled = styled.section `
-    padding: 0 64px;
+    padding: 0 16px;
+    @media screen and (min-width: 1024px) {
+        padding: 0 64px;
+    }
 
     .result-input {
         border-radius: 16px;

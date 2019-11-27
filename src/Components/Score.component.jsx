@@ -6,13 +6,20 @@ const ScoreStyled = styled.div `
     background-color: #116193;
     border-radius: 50%;
     position: relative;
-    bottom: ${props => props.width}px;
     display: flex;
     flex-flow: column wrap;
     height: ${props => props.width}px;
     justify-content: center;
-    left: 36px;
+    margin: 0 auto;
     width: ${props => props.width}px;
+
+    @media screen and (min-width: 1024px) {
+        bottom: ${props => props.width}px;
+        height: ${props => props.width}px;
+        left: 36px;
+        margin: 0;
+        width: ${props => props.width}px;
+    }
 
     .score-amout {
         align-items: center;

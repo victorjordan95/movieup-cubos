@@ -8,8 +8,19 @@ import ConvertDate from '../Services/ConvertDate.service';
 
 const CardStyled = styled.div`
     display: flex;
-    flex-flow: row wrap;
-    margin: 0 0 64px;
+    flex-flow: column wrap;
+    margin: 0 0 32px;
+
+    @media screen and (max-width: 768px) {
+        align-items: center;
+        justify-content: center;
+        margin: 0 0 16px;
+    }
+    
+    @media screen and (min-width: 1024px) {
+        flex-flow: row wrap;
+        margin: 0 0 64px;
+    }
 
     .card-poster {
         min-height: 300px;
@@ -18,10 +29,16 @@ const CardStyled = styled.div`
 
     .card-content {
         background-color: #ebebeb;
-        width: calc(100% - 200px);
+        width: 100%;
+        @media screen and (min-width: 1024px) {
+            min-height: 300px;
+            width: calc(100% - 200px);
+        }
 
         .card-header {
-            height: 100px;
+            @media screen and (min-width: 1024px) {
+                height: 100px;
+            }
             .title {
                 align-items: center;
                 background-color: #116193;
@@ -29,7 +46,10 @@ const CardStyled = styled.div`
                 display: flex;
                 flex-flow: row wrap;
                 font-size: 2rem;
-                padding: 16px 128px 8px;
+                padding: 16px;
+                @media screen and (min-width: 1024px) {
+                    padding: 16px 128px 8px;
+                }
             }
             .subtitle {
                 align-items: center;
@@ -38,27 +58,48 @@ const CardStyled = styled.div`
                 display: flex;
                 flex-flow: row wrap;
                 font-size: 1.2rem;
-                padding: 8px 128px;
+                padding: 16px;
+                @media screen and (min-width: 1024px) {
+                    padding: 8px 128px;
+                }
             }
         }
 
         .card-body {
-            margin: 0 0 32px;
-            padding: 0 32px;
+            margin: 0 0 16px;
+            padding: 0 16px;
+            @media screen and (min-width: 1024px) {
+                margin: 0 0 32px;
+                padding: 0 32px;
+            }
 
             .body-overview {
                 color: #424242;
                 font-size: 1.1rem;
                 line-height: 1.4rem;
-                margin: 8px 16px 32px;
+                margin: 32px 16px;
+                @media screen and (min-width: 1024px) {
+                    margin: 8px 16px 32px;
+                }
+            }
+
+            .see-more {
+                color: #116193;
+                display: block;
+                font-weight: bold;
+                margin: 32px 0;
+                text-align: center;
             }
 
             .tags {
                 align-items: center;
                 display: flex;
                 flex-flow: row wrap;
-                justify-content: flex-start;
-                margin: 0 16px;
+                justify-content: space-evenly;
+                @media screen and (min-width: 1024px) {
+                    margin: 0 16px;
+                    justify-content: flex-start;
+                }
             }
         }
     }
@@ -98,13 +139,20 @@ const MovieCard = ({movie}) => {
             </header>
 
             <div className="card-body">
-                <p className="body-overview">
-                    {movie.overview.length >= 100
-                    ? `${movie.overview.slice(0,500)}... <a href="">Read more</a>`
-                    : movie.overview
-                }
-                
-                </p>
+                {window.innerWidth >= 1024
+                    ? <p className="body-overview">
+                        {movie.overview.length >= 100
+                            ? `${movie.overview.slice(0, 500)}...`
+                            : movie.overview
+                        }
+                    </p>
+                    : <p className="body-overview">
+                        {movie.overview.length >= 100
+                            ? `${movie.overview.slice(0, 200)}...`
+                            : movie.overview
+                        }
+                    </p>}
+                <a href="" className="see-more">Ver mais detalhes</a>
                 <div className="tags">
                     {genres 
                     && movie 
