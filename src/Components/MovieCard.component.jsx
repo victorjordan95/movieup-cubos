@@ -24,7 +24,10 @@ const CardStyled = styled.div`
 
     .card-poster {
         min-height: 300px;
-        width: 200px;
+        width: 100%;
+        @media screen and (min-width: 1024px) {
+            width: 200px;
+        }
     }
 
     .card-content {
@@ -89,6 +92,10 @@ const CardStyled = styled.div`
                 font-weight: bold;
                 margin: 32px 0;
                 text-align: center;
+
+                @media screen and (min-width: 1024px) {
+                    text-align: left;
+                }
             }
 
             .tags {

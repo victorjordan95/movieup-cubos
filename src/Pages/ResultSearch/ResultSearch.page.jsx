@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import styled   from 'styled-components';
+import { withRouter } from 'react-router-dom';
 
 import MovieCard from '../../Components/MovieCard.component'
 import api from '../../Services/api';
@@ -25,13 +26,17 @@ const ResultSearchStyled = styled.section `
 const searchMovie = async (inputVal) => await api.get(`/search/movie/?api_key=${constants.API_KEY}&query=${inputVal}&language=${constants.LANGUAGE}`);
 
 
-const ResultSearch = () => {
+const ResultSearch = (props) => {
 
     const [inputVal, setInputVal] = useState("")
     const [isLoading, setLoading] = useState(false)
     const [listMovies, setListMovies] = useState()
     const inputRef  = useRef("")
     const timeoutId = useRef()
+
+    useEffect(() => {
+        console.log(props.location.state)
+    }, [props])
 
     function handleChange(e) {
         setInputVal(e.target.value)
@@ -80,4 +85,4 @@ const ResultSearch = () => {
     </ResultSearchStyled>
 }
 
-export default ResultSearch;
+export default withRouter(ResultSearch);

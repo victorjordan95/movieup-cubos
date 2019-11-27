@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react'
+import { withRouter } from 'react-router-dom';
+
 import styled   from 'styled-components';
 import api from '../../Services/api';
 import constants from '../../Constants/constants';
@@ -59,7 +61,7 @@ const SectionStyle = styled.div `
     }
 `
 
-const Home = () => {
+const Home = (props) => {
 
     const [movie, setMovie] = useState()
     const [genres, setGenres] = useState()
@@ -76,7 +78,11 @@ const Home = () => {
 
     const searchMovie = async () => {
         const response = await api.get(`/search/movie/?api_key=${constants.API_KEY}&query=${movie}&language=${constants.LANGUAGE}`);
-        setListMovies(response.data)
+        setListMovies(response.data.results)
+        props.history.push({
+            pathname: '/result',
+            state: { movies: response.data.results }
+        })
     }
 
     const movieByGenre = async (genreId) => {
@@ -108,4 +114,4 @@ const Home = () => {
     </SectionStyle>
 }
 
-export default Home;
+export default withRouter(Home);
