@@ -1,10 +1,10 @@
 import React from 'react'
 import styled   from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const NavbarStyled = styled.div `
     align-items: center;
     background-color: #116193;
-    color: #00e8e4;
     display: flex;
     flex-flow: row wrap;
     font-size: 2rem;
@@ -13,13 +13,17 @@ const NavbarStyled = styled.div `
     text-align: center;
 
     .title {
+        color: #00e8e4;
         margin: 0;
+        text-decoration: none;
+        font-family: 'Abel', sans-serif;
     }
 `;
 
 const Navbar = () => {
     return <NavbarStyled>
-        <h2 className="title">MovieUp - Movies</h2>
+        <Link to="/" 
+        className="title">MovieUp - Movies</Link>
     </NavbarStyled>
 }
 
