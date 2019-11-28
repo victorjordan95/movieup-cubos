@@ -25,7 +25,6 @@ const ResultSearchStyled = styled.section `
 
 const searchMovie = async (inputVal) => await api.get(`/search/movie/?api_key=${constants.API_KEY}&query=${inputVal}&language=${constants.LANGUAGE}`);
 
-
 const ResultSearch = (props) => {
 
     const [inputVal, setInputVal] = useState("")
@@ -36,34 +35,23 @@ const ResultSearch = (props) => {
 
     useEffect(() => {
         console.log(props.location.state)
+        setListMovies(props.location.state.movies)
     }, [props])
 
-    function handleChange(e) {
+    const handleChange = (e) => {
         setInputVal(e.target.value)
-        // mimic the value so we can access
-        // the latest value in our API call
         inputRef.current = e.target.value
     }
 
     useEffect(() => {
-        // if the user keeps typing, stop the API call!
         clearTimeout(timeoutId.current)
-        // don't make an API call with no data
         if (!inputVal.trim()) return
-        // capture the timeoutId so we can
-        // stop the call if the user keeps typing
         timeoutId.current = setTimeout(() => {
-            // grab our query, but store it in state so
-            // I can show it to you below in the example 😄
             setLoading(true);
             searchMovie(inputVal).then((res) => {
-                console.log(res.data.results)
                 setListMovies(res.data.results)
                 setLoading(false)
             });
-                // here we pass a callback so we get the current callCount value
-                // from the useState hook's setter function
-                // we use a Ref for timeoutId to avoid this same problem
         }, 800)
     }, [inputVal])
     
@@ -79,7 +67,7 @@ const ResultSearch = (props) => {
 
         {
             listMovies
-            && listMovies.map(movie => <MovieCard movie={movie}/>)
+            && listMovies.map((movie, key) => <MovieCard key={key} movie={movie}/>)
         }
 
     </ResultSearchStyled>

@@ -1,15 +1,21 @@
 import React, {useState, useEffect} from 'react'
+
+import { Link}  from "react-router-dom";
 import styled   from 'styled-components';
-import Score from './Score.component';
-import Tag from './Tag.component';
-import constants from '../Constants/constants';
-import api from '../Services/api';
-import ConvertDate from '../Services/ConvertDate.service';
+
+import Score    from './Score.component';
+import Tag      from './Tag.component';
+
+import constants    from '../Constants/constants';
+import api          from '../Services/api';
+import ConvertDate  from '../Services/ConvertDate.service';
 
 const CardStyled = styled.div`
+    border-bottom: 2px solid #EEEEEE;
     display: flex;
     flex-flow: column wrap;
     margin: 0 0 32px;
+    padding: 0 0 16px;
 
     @media screen and (max-width: 768px) {
         align-items: center;
@@ -159,7 +165,7 @@ const MovieCard = ({movie}) => {
                             : movie.overview
                         }
                     </p>}
-                <a href="" className="see-more">Ver mais detalhes</a>
+                <Link to={`movie/${movie.id}`} className="see-more">Ver mais detalhes</Link>
                 <div className="tags">
                     {genres 
                     && movie 

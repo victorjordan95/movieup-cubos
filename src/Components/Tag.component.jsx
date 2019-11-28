@@ -11,6 +11,10 @@ const StyledTag = styled.span `
     @media screen and (min-width: 1024px) {
         margin: 0 8px;
         padding: 4px 8px;
+
+        &:first-child {
+            margin: 4px 4px 4px 0;
+        }
     }
 
 `

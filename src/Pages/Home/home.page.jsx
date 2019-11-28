@@ -23,7 +23,10 @@ const SectionStyle = styled.div `
         box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);
         height: 48px;
         padding: 0 32px;
-        width: 50%;
+        width: 90%;
+        @media screen and (min-width: 1024px) {
+            width: 50%;
+        }
     }
 
     .search-option {
@@ -39,7 +42,10 @@ const SectionStyle = styled.div `
         box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);
         height: 48px;
         padding: 0 32px;
-        width: 30%;
+        width: 90%;
+        @media screen and (min-width: 1024px) {
+            width: 30%;
+        }
     }
 
     .search-button {
@@ -65,7 +71,6 @@ const Home = (props) => {
 
     const [movie, setMovie] = useState()
     const [genres, setGenres] = useState()
-    const [listMovies, setListMovies] = useState()
 
     useEffect(() => {
         fetchGenres();
@@ -78,16 +83,18 @@ const Home = (props) => {
 
     const searchMovie = async () => {
         const response = await api.get(`/search/movie/?api_key=${constants.API_KEY}&query=${movie}&language=${constants.LANGUAGE}`);
-        setListMovies(response.data.results)
         props.history.push({
-            pathname: '/result',
+            pathname: '/resultado',
             state: { movies: response.data.results }
         })
     }
 
     const movieByGenre = async (genreId) => {
         const response = await api.get(`/discover/movie/?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}&with_genres=${genreId}`);
-        setListMovies(response.data)
+        props.history.push({
+            pathname: '/resultado',
+            state: { movies: response.data.results }
+        })
     }
 
     return <SectionStyle>
@@ -95,7 +102,6 @@ const Home = (props) => {
         <input 
             type="text"
             className="search-input"
-            value={movie}
             onChange={(e) => setMovie(e.target.value)}
             placeholder="Faça sua pesquisa. Ex.: Vingadores, O Turista, Malévola, A cabana"
         />

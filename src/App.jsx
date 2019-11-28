@@ -3,8 +3,8 @@ import { Switch, Route } from "react-router-dom";
 
 import Navbar from './Components/navbar.component';
 
-import Home from './Pages/Home/home.page';
-import Movie from './Pages/Movie/movie.page';
+import Home from './Pages/Home/Home.page';
+import Movie from './Pages/Movie/Movie.page';
 import ResultSearch from './Pages/ResultSearch/ResultSearch.page';
 
 const App = () => {
@@ -15,7 +15,7 @@ const App = () => {
                 <Route exact path="/">
                     <Home />
                 </Route>
-                <Route path="/result">
+                <Route path="/resultado">
                     <ResultSearch />
                 </Route>
                 <Route path="/movie/:id">
