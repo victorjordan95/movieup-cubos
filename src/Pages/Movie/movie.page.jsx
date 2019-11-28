@@ -6,6 +6,7 @@ import api from '../../Services/api';
 import ConvertDate from '../../Services/ConvertDate.service';
 import Tag from '../../Components/Tag.component';
 import Score from '../../Components/Score.component';
+import Loader from '../../Components/Loader.component';
 
 const MovieInfoStyle = styled.div `
     background-color: #f2f2f2;
@@ -126,7 +127,6 @@ const Movie = (props) => {
     const fetchMovieDetails = async (movie_id) => {
         const response = await api.get(`/movie/${movie_id}?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`);
         setDetails(response.data);
-        console.log(response.data)
         setLoading(false)
     }
 
@@ -189,7 +189,7 @@ const Movie = (props) => {
                 className="movie-poster"
             />
         </MovieInfoStyle>
-    : <p>Loading...</p>
+    : <Loader />
 }
 
 export default withRouter(Movie);
