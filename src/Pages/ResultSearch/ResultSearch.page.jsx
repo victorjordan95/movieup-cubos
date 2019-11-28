@@ -3,7 +3,9 @@ import styled   from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
 import MovieCard from '../../Components/MovieCard.component'
-import api from '../../Services/api';
+import Loader    from '../../Components/Loader.component';
+
+import api       from '../../Services/api';
 import constants from '../../Constants/constants';
 
 const ResultSearchStyled = styled.section `
@@ -28,14 +30,14 @@ const searchMovie = async (inputVal) => await api.get(`/search/movie/?api_key=${
 const ResultSearch = (props) => {
 
     const [inputVal, setInputVal] = useState("")
-    const [isLoading, setLoading] = useState(false)
+    const [isLoading, setLoading] = useState(true)
     const [listMovies, setListMovies] = useState()
     const inputRef  = useRef("")
     const timeoutId = useRef()
 
     useEffect(() => {
-        console.log(props.location.state)
         setListMovies(props.location.state.movies)
+        setLoading(false)
     }, [props])
 
     const handleChange = (e) => {
@@ -55,8 +57,9 @@ const ResultSearch = (props) => {
         }, 800)
     }, [inputVal])
     
-    return <ResultSearchStyled>
-
+    return isLoading
+    ? <Loader />
+    : <ResultSearchStyled>
         <input 
             placeholder = "Busque um filme por nome, ano ou gênero..."
             type        = "text" 
