@@ -124,11 +124,13 @@ const MovieCard = ({movie}) => {
 
     useEffect(() => {
         fetchGenres();
-    }, [])
+    }, [fetchGenres])
 
     const fetchGenres = async () => {
-        const response = await api.get(`/genre/movie/list?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`);
-        setGenres(response.data.genres);
+        if (!genres) {
+            const response = await api.get(`/genre/movie/list?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`);
+            setGenres(response.data.genres);
+        }
     }
 
     const getGenreName = (selectedGenreId) => genres.filter(genre => genre.id === selectedGenreId)[0].name;

@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import styled   from 'styled-components';
 import { withRouter } from 'react-router-dom';
+import Pagination from "react-js-pagination";
 
 import MovieCard from '../../Components/MovieCard.component'
 import Loader    from '../../Components/Loader.component';
@@ -32,6 +33,7 @@ const ResultSearch = (props) => {
     const [inputVal, setInputVal] = useState("")
     const [isLoading, setLoading] = useState(true)
     const [listMovies, setListMovies] = useState()
+    const [activePage, setActivePage] = useState(1)
     const inputRef  = useRef("")
     const timeoutId = useRef()
 
@@ -43,6 +45,10 @@ const ResultSearch = (props) => {
     const handleChange = (e) => {
         setInputVal(e.target.value)
         inputRef.current = e.target.value
+    }
+
+    const handlePageChange = () => {
+        console.log('changing page')
     }
 
     useEffect(() => {
@@ -72,7 +78,14 @@ const ResultSearch = (props) => {
             listMovies
             && listMovies.map((movie, key) => <MovieCard key={key} movie={movie}/>)
         }
-
+        <Pagination
+            activePage={activePage}
+            itemsCountPerPage={10}
+            totalItemsCount={450}
+            pageRangeDisplayed={5}
+            onChange={handlePageChange}
+        />
+  
     </ResultSearchStyled>
 }
 

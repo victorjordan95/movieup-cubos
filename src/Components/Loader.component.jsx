@@ -276,9 +276,9 @@ const LoaderStyled = styled.div `
 `
 
 const Loader = () => <LoaderStyled>
-    <div class="load-align">
-        <div class="film"><span></span><span></span><span></span><span></span></div>
-        <div class="film"><span></span><span></span><span></span><span></span></div>
+    <div className="load-align">
+        <div className="film"><span></span><span></span><span></span><span></span></div>
+        <div className="film"><span></span><span></span><span></span><span></span></div>
     </div>
 </LoaderStyled>
 
