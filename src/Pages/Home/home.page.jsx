@@ -85,7 +85,7 @@ const Home = (props) => {
         const response = await api.get(`/search/movie/?api_key=${constants.API_KEY}&query=${movie}&language=${constants.LANGUAGE}`);
         props.history.push({
             pathname: '/resultado',
-            state: { movies: response.data.results }
+            state: { movies: response.data }
         })
     }
 
@@ -93,7 +93,7 @@ const Home = (props) => {
         const response = await api.get(`/discover/movie/?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}&with_genres=${genreId}`);
         props.history.push({
             pathname: '/resultado',
-            state: { movies: response.data.results }
+            state: { movies: response.data }
         })
     }
 

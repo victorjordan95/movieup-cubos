@@ -24,6 +24,7 @@ const CardStyled = styled.div`
     }
     
     @media screen and (min-width: 1024px) {
+        border-bottom: 0;
         flex-flow: row wrap;
         margin: 0 0 64px;
     }
@@ -124,13 +125,11 @@ const MovieCard = ({movie}) => {
 
     useEffect(() => {
         fetchGenres();
-    }, [fetchGenres])
+    }, [])
 
     const fetchGenres = async () => {
-        if (!genres) {
-            const response = await api.get(`/genre/movie/list?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`);
-            setGenres(response.data.genres);
-        }
+        const response = await api.get(`/genre/movie/list?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`);
+        setGenres(response.data.genres);
     }
 
     const getGenreName = (selectedGenreId) => genres.filter(genre => genre.id === selectedGenreId)[0].name;
