@@ -21,7 +21,7 @@ Acesse [http://localhost:3000](http://localhost:3000) e veja o projeto sendo exe
 
 ### Acessando a aplicação on-line
 
-Caso queira apenas ver o resultado do teste, você pode acessar [através deste link](movieup-cubos.surge.sh)
+Caso queira apenas ver o resultado do teste, você pode acessar [através deste link](http://movieup-cubos.surge.sh)
 Foi usado o Surge para servir como servidor
 
 
