@@ -70,6 +70,12 @@ const Home = (props) => {
 
     const [movie, setMovie] = useState()
 
+    const keyPressed = (e) => {
+        if(e.key === "Enter") {
+            searchMovie()
+        }
+    }
+
 
     const searchMovie = async () => {
         const response = await discoverMovieByName(movie)
@@ -90,6 +96,7 @@ const Home = (props) => {
             className="search-input"
             onChange={(e) => setMovie(e.target.value)}
             placeholder="Faça sua pesquisa. Ex.: Vingadores, O Turista, Malévola, A cabana"
+            onKeyDown={(e) => keyPressed(e)}
         />
         <button 
             type="submit"

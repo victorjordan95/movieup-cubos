@@ -1,3 +1,7 @@
+/**
+ * Return the date in the 'dd/MM/yyyy' format.
+ * @param {String} date Date with US format.
+ */
 const ConvertDate = (date) => {
     if (!date) {
         return '-'
