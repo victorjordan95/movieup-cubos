@@ -27,4 +27,14 @@ export const discoverMovieByName = async (movie, currentPage = 1) =>
 export const getMovieById = async (movie_id) => 
     await api.get(`/movie/${movie_id}?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`);
         
-
+/**
+ * Return the videos of
+ * an specific movie, find it
+ * by it id.
+ * @param {Number} movie_id 
+ */
+export const getMovieVideoById = async (movie_id) => 
+    await api.get(`/movie/${movie_id}/videos?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`);
+        
+export const getGenres = async () =>
+    await api.get(`/genre/movie/list?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`)

@@ -6,7 +6,7 @@ import Pagination     from "react-js-pagination";
 import MovieCard from '../../Components/MovieCard.component'
 import Loader    from '../../Components/Loader.component';
 
-import { discoverMovieByName } from '../../Services/Endpoints.service';
+import { discoverMovieByName, getGenres } from '../../Services/Endpoints.service';
 
 const ResultSearchStyled = styled.section `
     padding: 0 16px;
@@ -83,9 +83,11 @@ const paginateItems = (items, activePage) => {
 
 const ResultSearch = (props) => {
 
-    const [inputVal, setInputVal] = useState("")
-    const [isLoading, setLoading] = useState(true)
-    const [listMovies, setListMovies] = useState()
+    const [inputVal, setInputVal]       = useState("")
+    const [isLoading, setLoading]       = useState(true)
+    const [listMovies, setListMovies]   = useState()
+    const [genres, setGenres]           = useState()
+    
     
     // Pagination
     const [activePageFront, setActivePageFront]       = useState(1)
@@ -97,6 +99,8 @@ const ResultSearch = (props) => {
     const timeoutId = useRef()
 
     useEffect(() => {
+        fetchGenres();
+
         const searchedTerm = props.location.state.searchedTerm;
 
         if (searchedTerm) {
@@ -124,10 +128,20 @@ const ResultSearch = (props) => {
     const handlePageChange = (e) => {
         setLoading(true)
 
-        if (!(e % 5)) {
+        if (e <= 5 && !(e % 5)) {
             const pageToShow = (e / 5) === 1 ? 2 : e / 5;
 
             discoverMovieByName(inputVal, pageToShow)
+                .then((res) => {
+                    setBackendPage(res.data.page)
+                    setListMovies(paginateItems(res.data.results, 0));
+                    setAllMovies(res.data.results)
+                    window.scroll(0, 0);
+                    setLoading(false)
+                });
+        } else if (e >= 6 && !(e % 4)) {
+            const pageToShow = (e / 5) === 1 ? 2 : e / 5;
+            discoverMovieByName(inputVal, Math.ceil(pageToShow) + 1)
                 .then((res) => {
                     setBackendPage(res.data.page)
                     setListMovies(paginateItems(res.data.results, 0));
@@ -143,6 +157,11 @@ const ResultSearch = (props) => {
         }
         setActivePageFront(e)
         
+    }
+
+    const fetchGenres = async () => {
+        const response = await getGenres();
+        setGenres(response.data.genres);
     }
 
     useEffect(() => {
@@ -181,7 +200,7 @@ const ResultSearch = (props) => {
 
         {
             listMovies
-            && listMovies.map((movie, key) => <MovieCard key={key} movie={movie}/>)
+            && listMovies.map((movie, key) => <MovieCard key={key} movie={movie} genres={genres}/>)
         }
         <Pagination
             activePage         = {activePageFront}

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 
 import { Link}  from "react-router-dom";
 import styled   from 'styled-components';
@@ -6,8 +6,6 @@ import styled   from 'styled-components';
 import Score    from './Score.component';
 import Tag      from './Tag.component';
 
-import constants    from '../Constants/constants';
-import api          from '../Services/api';
 import ConvertDate  from '../Services/ConvertDate.service';
 
 const CardStyled = styled.div`
@@ -59,6 +57,11 @@ const CardStyled = styled.div`
                 padding: 16px;
                 @media screen and (min-width: 1024px) {
                     padding: 16px 128px 8px;
+                    max-width: 100%;
+                    overflow: hidden !important;
+                    text-decoration: none;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
             }
             .subtitle {
@@ -97,7 +100,7 @@ const CardStyled = styled.div`
                 color: #116193;
                 display: block;
                 font-weight: bold;
-                margin: 32px 0;
+                margin: 32px 16px;
                 text-align: center;
 
                 @media screen and (min-width: 1024px) {
@@ -119,18 +122,18 @@ const CardStyled = styled.div`
     }
 `;
 
-const MovieCard = ({movie}) => {
+const MovieCard = ({movie, genres}) => {
 
-    const [genres, setGenres] = useState()
+    // const [genres, setGenres] = useState()
 
-    useEffect(() => {
-        fetchGenres();
-    }, [])
+    // useEffect(() => {
+    //     fetchGenres();
+    // }, [])
 
-    const fetchGenres = async () => {
-        const response = await api.get(`/genre/movie/list?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`);
-        setGenres(response.data.genres);
-    }
+    // const fetchGenres = async () => {
+    //     const response = await api.get(`/genre/movie/list?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`);
+    //     setGenres(response.data.genres);
+    // }
 
     const getGenreName = (selectedGenreId) => genres.filter(genre => genre.id === selectedGenreId)[0].name;
 
