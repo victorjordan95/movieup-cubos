@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import styled   from 'styled-components';
 import { withRouter } from 'react-router-dom';
-import constants from '../../Constants/constants';
-import api from '../../Services/api';
-import ConvertDate from '../../Services/ConvertDate.service';
-import Tag from '../../Components/Tag.component';
-import Score from '../../Components/Score.component';
+
+import Tag    from '../../Components/Tag.component';
+import Score  from '../../Components/Score.component';
 import Loader from '../../Components/Loader.component';
+
+import ConvertDate      from '../../Services/ConvertDate.service';
+import { getMovieById } from '../../Services/Endpoints.service';
 
 const MovieInfoStyle = styled.div `
     background-color: #f2f2f2;
@@ -38,7 +39,10 @@ const MovieInfoStyle = styled.div `
 
     .info-body {
         padding: 32px;
-        width: calc(100% - 300px);
+        width: 100%;
+        @media screen and (min-width: 1024px) {
+            width: calc(100% - 300px);
+        }
 
         .subtitle {
             border-bottom: 2px solid #00e0cf;
@@ -83,9 +87,6 @@ const MovieInfoStyle = styled.div `
                     font-size: 1.1rem;
                 }
 
-                .resume {
-
-                }
             }
         }
         .info-tags {
@@ -109,6 +110,7 @@ const MovieInfoStyle = styled.div `
     }
 
     .movie-poster {
+        margin: 0 auto;
         max-width: 300px;
         width: 100%;
     }
@@ -125,7 +127,7 @@ const Movie = (props) => {
     }, [props])
 
     const fetchMovieDetails = async (movie_id) => {
-        const response = await api.get(`/movie/${movie_id}?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`);
+        const response = await getMovieById(movie_id);
         setDetails(response.data);
         setLoading(false)
     }

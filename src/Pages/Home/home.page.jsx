@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import { withRouter } from 'react-router-dom';
 
 import styled   from 'styled-components';
-import api from '../../Services/api';
-import constants from '../../Constants/constants';
+import { discoverMovieByName } from '../../Services/Endpoints.service';
 
 const SectionStyle = styled.div `
     align-items: center;
@@ -70,30 +69,17 @@ const SectionStyle = styled.div `
 const Home = (props) => {
 
     const [movie, setMovie] = useState()
-    const [genres, setGenres] = useState()
 
-    useEffect(() => {
-        fetchGenres();
-    }, [])
-
-    const fetchGenres = async () => {
-        const response = await api.get(`/genre/movie/list?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`);
-        setGenres(response.data.genres);
-    }
 
     const searchMovie = async () => {
-        const response = await api.get(`/search/movie/?api_key=${constants.API_KEY}&query=${movie}&language=${constants.LANGUAGE}`);
+        const response = await discoverMovieByName(movie)
         props.history.push({
             pathname: '/resultado',
-            state: { movies: response.data }
-        })
-    }
-
-    const movieByGenre = async (genreId) => {
-        const response = await api.get(`/discover/movie/?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}&with_genres=${genreId}`);
-        props.history.push({
-            pathname: '/resultado',
-            state: { movies: response.data }
+            state: { 
+                movies: response.data,
+                searchedTerm: movie,
+                searchedCategory: ''
+            }
         })
     }
 
@@ -112,11 +98,6 @@ const Home = (props) => {
         >
             Procurar
         </button>
-        <p className="search-option">Ou</p>
-        {genres && <select className="search-select" onChange={(e) => movieByGenre(e.target.value)}>
-            <option value="">Selecione um gênero</option>
-            {genres.map(genre => <option value={genre.id} key={genre.id}>{genre.name}</option>)}
-        </select>}
     </SectionStyle>
 }
 

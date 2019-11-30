@@ -1,13 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react'
-import styled   from 'styled-components';
+import styled         from 'styled-components';
 import { withRouter } from 'react-router-dom';
-import Pagination from "react-js-pagination";
+import Pagination     from "react-js-pagination";
 
 import MovieCard from '../../Components/MovieCard.component'
 import Loader    from '../../Components/Loader.component';
 
-import api       from '../../Services/api';
-import constants from '../../Constants/constants';
+import { discoverMovieByName } from '../../Services/Endpoints.service';
 
 const ResultSearchStyled = styled.section `
     padding: 0 16px;
@@ -76,10 +75,10 @@ const ResultSearchStyled = styled.section `
     }
 `
 
-const searchMovie = async (inputVal, currentPage) => await api.get(`/search/movie/?api_key=${constants.API_KEY}&query=${inputVal}&page=${currentPage}&language=${constants.LANGUAGE}`);
-
 const paginateItems = (items, activePage) => {
-    return items.slice(activePage === 1 ? 0 : ((activePage - 1) * 5) + 1, activePage * 5);
+    const startNumber = activePage === 0 ? 0 : activePage * 5;
+    const endNumber   = activePage === 0 ? 5 : (activePage + 1) * 5; 
+    return items.slice(startNumber, endNumber)
 }
 
 const ResultSearch = (props) => {
@@ -92,15 +91,27 @@ const ResultSearch = (props) => {
     const [activePageFront, setActivePageFront]       = useState(1)
     const [allMovies, setAllMovies]         = useState()
     const [totalResults, setTotalResults]   = useState()
-    const [numberSlice, setNumberSlice]     = useState(1)
+    const [backEndPage, setBackendPage]     = useState()
 
     const inputRef  = useRef("")
     const timeoutId = useRef()
 
     useEffect(() => {
-        setAllMovies(props.location.state.movies.results)
-        setListMovies(paginateItems(props.location.state.movies.results, numberSlice));
-        setTotalResults(props.location.state.movies.total_results)
+        const searchedTerm = props.location.state.searchedTerm;
+
+        if (searchedTerm) {
+            discoverMovieByName(searchedTerm, 1)
+            .then((res) => {
+                setInputVal(searchedTerm)
+                inputRef.current = searchedTerm
+                setBackendPage(res.data.page)
+                setActivePageFront(1)
+                setTotalResults(res.data.total_results)
+                setListMovies(paginateItems(res.data.results, 0));
+                setAllMovies(res.data.results)
+                setLoading(false)
+            });
+        }
         setLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -115,20 +126,23 @@ const ResultSearch = (props) => {
 
         if (!(e % 5)) {
             const pageToShow = (e / 5) === 1 ? 2 : e / 5;
-            setNumberSlice(1)
 
-            searchMovie(inputVal, pageToShow).then((res) => {
-                setListMovies(paginateItems(res.data.results, 1));
-                setAllMovies(res.data.results)
-                setLoading(false)
-            });
+            discoverMovieByName(inputVal, pageToShow)
+                .then((res) => {
+                    setBackendPage(res.data.page)
+                    setListMovies(paginateItems(res.data.results, 0));
+                    setAllMovies(res.data.results)
+                    window.scroll(0, 0);
+                    setLoading(false)
+                });
+        } else {
+            const pageToShow =  e - (5 * (backEndPage - 1));
+            setListMovies(paginateItems(allMovies, pageToShow));
+            setLoading(false)
+            window.scroll(0, 0);
         }
         setActivePageFront(e)
-        setListMovies(paginateItems(allMovies, e));
-        setNumberSlice(numberSlice)
-        setLoading(false)
-        window.scroll(0, 0);
-
+        
     }
 
     useEffect(() => {
@@ -136,10 +150,17 @@ const ResultSearch = (props) => {
         if (!inputVal.trim()) return
         timeoutId.current = setTimeout(() => {
             setLoading(true);
-            searchMovie(inputVal, 1).then((res) => {
+            discoverMovieByName(inputVal, 1).then((res) => {
+                props.history.push({
+                    state: { 
+                        searchedTerm: inputVal,
+                        movies: res.data.results
+                    }
+                })
+                setBackendPage(res.data.page)
                 setActivePageFront(1)
                 setTotalResults(res.data.total_results)
-                setListMovies(paginateItems(res.data.results, numberSlice));
+                setListMovies(paginateItems(res.data.results, 0));
                 setAllMovies(res.data.results)
                 setLoading(false)
             });
@@ -163,11 +184,11 @@ const ResultSearch = (props) => {
             && listMovies.map((movie, key) => <MovieCard key={key} movie={movie}/>)
         }
         <Pagination
-            activePage={activePageFront}
-            itemsCountPerPage={5}
-            totalItemsCount={totalResults}
-            pageRangeDisplayed={5}
-            onChange={(e) => handlePageChange(e)}
+            activePage         = {activePageFront}
+            itemsCountPerPage  = {5}
+            totalItemsCount    = {totalResults}
+            pageRangeDisplayed = {5}
+            onChange           = {(e) => handlePageChange(e)}
         />
   
     </ResultSearchStyled>
