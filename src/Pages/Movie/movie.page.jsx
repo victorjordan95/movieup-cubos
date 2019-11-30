@@ -9,11 +9,11 @@ import Loader from '../../Components/Loader.component';
 import ConvertDate      from '../../Services/ConvertDate.service';
 import { getMovieById, getMovieVideoById } from '../../Services/Endpoints.service';
 
-const MovieDetailsStyled = styled.div `
+const MovieDetailsStyled = styled.section `
     margin: 0 0 32px;
 `
 
-const MovieInfoStyle = styled.div `
+const MovieInfoStyle = styled.article `
     background-color: #f2f2f2;
     display: flex;
     flex-flow: column-reverse;
@@ -64,7 +64,6 @@ const MovieInfoStyle = styled.div `
             text-align: center;
             width: 100%;
             @media screen and (min-width: 1024px) {
-                /* padding: 0 32px; */
                 text-align: left;
                 width: auto;
             }

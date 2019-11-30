@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Link}  from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled   from 'styled-components';
 
 import Score    from './Score.component';
@@ -8,12 +8,13 @@ import Tag      from './Tag.component';
 
 import ConvertDate  from '../Services/ConvertDate.service';
 
-const CardStyled = styled.div`
+const CardStyled = styled(Link)`
     border-bottom: 2px solid #EEEEEE;
     display: flex;
     flex-flow: column wrap;
     margin: 0 0 32px;
     padding: 0 0 16px;
+    text-decoration: none;
 
     @media screen and (max-width: 768px) {
         align-items: center;
@@ -124,20 +125,9 @@ const CardStyled = styled.div`
 
 const MovieCard = ({movie, genres}) => {
 
-    // const [genres, setGenres] = useState()
-
-    // useEffect(() => {
-    //     fetchGenres();
-    // }, [])
-
-    // const fetchGenres = async () => {
-    //     const response = await api.get(`/genre/movie/list?api_key=${constants.API_KEY}&language=${constants.LANGUAGE}`);
-    //     setGenres(response.data.genres);
-    // }
-
     const getGenreName = (selectedGenreId) => genres.filter(genre => genre.id === selectedGenreId)[0].name;
 
-    return <CardStyled>
+    return <CardStyled to={`movie/${movie.id}`}>
         <img 
             src={ movie.poster_path 
                 ? `https://image.tmdb.org/t/p/w200/${movie.poster_path}`

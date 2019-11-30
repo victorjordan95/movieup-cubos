@@ -2,7 +2,7 @@ import React from 'react'
 import styled   from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const NavbarStyled = styled.div `
+const NavbarStyled = styled.nav `
     align-items: center;
     background-color: #116193;
     display: flex;

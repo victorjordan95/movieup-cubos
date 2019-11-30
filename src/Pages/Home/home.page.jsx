@@ -76,7 +76,6 @@ const Home = (props) => {
         }
     }
 
-
     const searchMovie = async () => {
         const response = await discoverMovieByName(movie)
         props.history.push({
